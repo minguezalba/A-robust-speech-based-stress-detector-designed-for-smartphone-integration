@@ -9,7 +9,7 @@ from dataTools import plot_confusion_matrix, loadData
 import numpy as np
 import pandas as pd
 from sklearn.neural_network import MLPClassifier
-from sklearn.metrics import f1_score, confusion_matrix
+from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn_porter import Porter
 import json
 
@@ -19,10 +19,10 @@ import json
 #=============================================================================
 
 list_SNR = ["20", "15", "10", "5", "0", "_5"]
-timestamp_con_SS = "20190202_174222_"
-timestamp_sin_SS = "20190202_201442_"
+timestamp_con_SS = "20190204_180607_"
+timestamp_sin_SS = "20190204_192748_"
 
-ss = False
+ss = True
 
 #=============================================================================
 # CHARGE MODEL CLEAN CONDITIONS
@@ -68,6 +68,14 @@ output = porter.export(export_data=True, export_dir=folder, export_filename=time
 # TEST MODEL FOR DIFFERENT CONDITIONS
 #=============================================================================
 
+accuracy = []
+conf_matrix = []
+Tn = []
+Fp = []
+Fn = []
+Tp = []
+
+
 for i in range(0, len(list_SNR)):
     
     ind = i
@@ -107,13 +115,20 @@ for i in range(0, len(list_SNR)):
     # PREDICT TEST
     #=============================================================================
     ytest_hat = mlp.predict(xtest)
-    print("Score Test: ", f1_score(ytest, ytest_hat))
+    accuracy.append(accuracy_score(ytest, ytest_hat))
+    print("Score Test: ", accuracy_score(ytest, ytest_hat))
     
     #============================================================================
     # PLOT CONFUSION MATRIX
     #=============================================================================
     
     cnf_matrix = confusion_matrix(ytest, ytest_hat)
+    conf_matrix.append(cnf_matrix)
+    Tn.append(cnf_matrix[0][0])
+    Fp.append(cnf_matrix[0][1])
+    Fn.append(cnf_matrix[1][0])
+    Tp.append(cnf_matrix[1][1])
+    
     
     # Plot non-normalized confusion matrix
     #plt.figure()
@@ -126,4 +141,16 @@ for i in range(0, len(list_SNR)):
                           title='Normalized confusion matrix')
     
     #plt.show()
+    
+d = {'accuracy': accuracy,
+     'confusion_matrix': conf_matrix,
+     'Tn': Tn,
+     'Fp': Fp,
+     'Fn': Fn,
+     'Tp': Tp}
+
+df = pd.DataFrame(data=d)
+df.to_excel("output.xlsx")
+
+
     

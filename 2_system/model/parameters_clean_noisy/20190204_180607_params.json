@@ -1,0 +1,1 @@
+{"activation": "logistic", "alpha": 0.01, "hidden_layer_sizes": [250]}

@@ -78,8 +78,8 @@ np.save(diir +  timestr + "ytrain.npy", ytrain)
 t = time.time()
 
 p1 = ['logistic', 'relu', 'tanh']
-p2 = np.logspace(-4,-1, 10)
-p3 = [(100,), (150,), (200,), (250,), (300,)]
+p2 = np.logspace(-3,-1, 5)
+p3 = [(100,), (150,), (200,), (250,)]
 
 parameters = {'activation':p1, 
               'alpha':p2, 
@@ -87,7 +87,7 @@ parameters = {'activation':p1,
 
 mlp_cv = MLPClassifier(solver='adam', max_iter=600)
 
-model = GridSearchCV(mlp_cv, parameters, scoring='f1', cv=5, verbose=25, n_jobs=-2)
+model = GridSearchCV(mlp_cv, parameters, scoring='accuracy', cv=5, verbose=25, n_jobs=-2)
 model.fit(xtrain, ytrain)
 
 print("=============================================================")
