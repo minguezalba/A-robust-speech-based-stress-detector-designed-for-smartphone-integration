@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Dec  8 22:20:33 2018
 
-@author: Alba
-"""
 
 import javaobj
 import numpy as np
@@ -33,7 +29,7 @@ def readSERfile(filename):
 # Defining files
 
 # Options: "original", "20", "15", "10", "5", "0", "_5"
-SNR = "20"
+SNR = "10"
 # Options: "set1", "set2", "test"
 setname = "set1" 
 diir = "../data/data_ser/" + SNR + "/" + setname + "/"
@@ -56,7 +52,7 @@ axarr[0].plot(original)
 axarr[0].set_title("Original")
 
 axarr[1].plot(normalize)
-axarr[1].set_title("Normalize")
+axarr[1].set_title("Normalized")
 
 axarr[2].plot(denoised)
 axarr[2].set_title("Denoised")
