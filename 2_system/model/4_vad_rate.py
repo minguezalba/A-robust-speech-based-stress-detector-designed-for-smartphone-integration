@@ -13,15 +13,19 @@ import numpy as np
 #=============================================================================
 
 list_SNR = ["original", "20", "15", "10", "5", "0", "_5"]
-rate = []  # Rate removed frames
-ss = False
+rate_sin_SS = []  # Rate removed frames
+labels_sin_SS = []
+ss = True
 
 for snr in list_SNR:
-    _, _, indexes1 = loadData('set1', snr, ss=ss)
-    _, _, indexes2 = loadData('set2', snr, ss=ss)
+    _, labels1, indexes1 = loadData('set1', snr, ss=ss)
+    _, labels2, indexes2 = loadData('set2', snr, ss=ss)
     indexes = np.vstack((indexes1, indexes2))
+    labels = np.vstack((labels1, labels2))
     
-    rate.append(np.sum(indexes==0)*100/indexes.shape[0])
+    rate_sin_SS.append(np.sum(indexes==0)*100/indexes.shape[0])
+    labels_sin_SS.append(np.sum(labels==0)*100/indexes.shape[0])
     
 
-print("\nMean rate VAD: {0:.2f}%".format(np.mean(rate)))
+print("\nMean rate VAD sin SS: {0:.2f}%".format(np.mean(rate_sin_SS)))
+print("\nMean class 0 sin SS: {0:.2f}%".format(np.mean(labels_sin_SS)))
